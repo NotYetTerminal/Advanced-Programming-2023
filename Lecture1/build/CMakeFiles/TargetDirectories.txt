@@ -1,0 +1,7 @@
+/home/gabor/Documents/GitHub/Advanced-Programming-2023/Lecture1/build/CMakeFiles/lecture1.dir
+/home/gabor/Documents/GitHub/Advanced-Programming-2023/Lecture1/build/CMakeFiles/edit_cache.dir
+/home/gabor/Documents/GitHub/Advanced-Programming-2023/Lecture1/build/CMakeFiles/rebuild_cache.dir
+/home/gabor/Documents/GitHub/Advanced-Programming-2023/Lecture1/build/CMakeFiles/list_install_components.dir
+/home/gabor/Documents/GitHub/Advanced-Programming-2023/Lecture1/build/CMakeFiles/install.dir
+/home/gabor/Documents/GitHub/Advanced-Programming-2023/Lecture1/build/CMakeFiles/install/local.dir
+/home/gabor/Documents/GitHub/Advanced-Programming-2023/Lecture1/build/CMakeFiles/install/strip.dir
