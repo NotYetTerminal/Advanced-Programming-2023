@@ -3,23 +3,30 @@
 
 int main()
 {
-    int firstVariable= 10;
+    int firstIntVariable= 10;
     char firstChar = 'a';
 
-    firstVariable = 100;
+    firstIntVariable = 200;
     firstChar = 'b';
 
     if (firstChar == 'b')
     {
-
+        int test = 10;
     }
-    if (firstVariable == 23)
+    else if (firstIntVariable == 23)
     {
-
+        int test = 20;
+    }
+    while (firstIntVariable > 100)
+    {
+        firstIntVariable--;
+    }
+    for (int index = 0; index < 10; index++)
+    {
+        std::cout << index << "\n";
     }
 
 
     std::cout << "Hello, world!\n";
-
     return 0;
 }
