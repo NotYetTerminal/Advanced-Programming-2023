@@ -1,0 +1,8 @@
+[
+{
+  "directory": "/home/gabor/Documents/GitHub/Advanced-Programming-2023/Lab1/build",
+  "command": "/usr/bin/c++ -g -o CMakeFiles/lab1.dir/main.cpp.o -c /home/gabor/Documents/GitHub/Advanced-Programming-2023/Lab1/main.cpp",
+  "file": "/home/gabor/Documents/GitHub/Advanced-Programming-2023/Lab1/main.cpp",
+  "output": "CMakeFiles/lab1.dir/main.cpp.o"
+}
+]
