@@ -16,7 +16,7 @@ void Question1()
 
     cout << "Input year to check: ";
     cin >> yearChecking;
-    cout << yearChecking << "\n";
+    cout << yearChecking << '\n';
 
 
     if (yearChecking % 4 == 0)
@@ -42,7 +42,7 @@ void Question1()
         cout << "Not leap year!";
     }
 
-    cout << "\n";
+    cout << '\n';
     return;
 }
 
@@ -53,7 +53,7 @@ void Question2()
 
     cout << "Input number to check if palindrome: ";
     cin >> numberToCheck;
-    cout << numberToCheck << "\n";
+    cout << numberToCheck << '\n';
 
     int temporaryNumber = numberToCheck;
     int reversedNumber = 0;
@@ -86,7 +86,7 @@ void Question3()
 
     cout << "Input number to check if prime: ";
     cin >> numberToCheck;
-    cout << numberToCheck << "\n";
+    cout << numberToCheck << '\n';
 
     if (numberToCheck < 0)
     {
@@ -115,7 +115,7 @@ void Question4()
 
     cout << "Input binary number to convert: ";
     cin >> binaryNumber;
-    cout << binaryNumber << "\n";
+    cout << binaryNumber << '\n';
 
     int decimalNumber = 0;
     int powerOfTwo = 1;
@@ -134,7 +134,7 @@ void Question4()
         binaryNumber /= 10;
     }
 
-    cout << "Result in decimal: " << decimalNumber << "\n";
+    cout << "Result in decimal: " << decimalNumber << '\n';
     return;
 }
 
@@ -164,7 +164,7 @@ void Question5()
     }
     while (cin.peek() != '\n');
 
-    cout << "Number in integer format: " << integerNumber << "\n";
+    cout << "Number in integer format: " << integerNumber << '\n';
     return;
 }
 
@@ -180,7 +180,7 @@ void Question6()
         {
             cout << printingCharacter;
         }
-        cout << "\n";
+        cout << '\n';
     }
     return;
 }
@@ -201,7 +201,7 @@ void Question7()
         {
             cout << printingCharacter;
         }
-        cout << "\n";
+        cout << '\n';
     }
     return;
 }
@@ -233,7 +233,7 @@ void Question8()
 
     if (result != -1)
     {
-        cout << toFind << " found at: " << result << "\n";
+        cout << toFind << " found at: " << result << '\n';
     }
     else
     {
@@ -290,7 +290,7 @@ void Question9()
 
     if (result != -1)
     {
-        cout << "Second largest number: " << result << "\n";
+        cout << "Second largest number: " << result << '\n';
     }
     else
     {
@@ -437,58 +437,306 @@ void Question11()
 }
 
 
+void leftShiftAtIndex(int size, int& count, int arr[], int startingIndex)
+{
+    for (int index = startingIndex; index < count; index++)
+    {
+        if (index != size - 1)
+        {
+            arr[index] = arr[index + 1];
+        }
+        else
+        {
+            arr[index] = 0;
+        }
+    }
+    count -= 1;
+    return;
+}
+
+
+bool deleteElement(int& size, int& count, int arr[], int deleteIndex)
+{
+    if (deleteIndex >= count)
+    {
+        return false;
+    }
+    leftShiftAtIndex(size, count, arr, deleteIndex);
+	return true;
+}
+
+
 void Question12()
 {
+    int size = 5;
+    int count = 5;
+    int arr[5] = {1, 2, 4, 34, 12};
+
+    cout << "Array: ";
+    printArray(size, arr);
+
+    int deleteIndex = 2;
+
+    bool result = deleteElement(size, count, arr, deleteIndex);
+    if (result == true)
+    {
+        cout << "Element deleted!\n";
+    }
+    else
+    {
+        cout << "Element not deleted!\n";
+    }
+    cout << "Array: ";
+    printArray(size, arr);
+
+    deleteIndex = 4;
+
+    result = deleteElement(size, count, arr, deleteIndex);
+    if (result == true)
+    {
+        cout << "Element deleted!\n";
+    }
+    else
+    {
+        cout << "Element not deleted!\n";
+    }
+    cout << "Array: ";
+    printArray(size, arr);
+
+    deleteIndex = 0;
+
+    result = deleteElement(size, count, arr, deleteIndex);
+    if (result == true)
+    {
+        cout << "Element deleted!\n";
+    }
+    else
+    {
+        cout << "Element not deleted!\n";
+    }
+    cout << "Array: ";
+    printArray(size, arr);
 
     return;
+}
+
+
+int frequencyCount(int size, int arr[], int value)
+{
+    int foundCount = 0;
+    for (int index = 0; index < size; index++)
+    {
+        if (arr[index] == value)
+        {
+            foundCount++;
+        }
+    }
+	return foundCount;
 }
 
 
 void Question13()
 {
+    int size = 6;
+    int arr[6] = {1, 2, 1, 12, 34, 1};
+    int searchingValue = 1;
 
+    int result = frequencyCount(size, arr, searchingValue);
+
+    cout << "Number of times found: " << result << '\n';
     return;
+}
+
+
+int countDuplicates(int size, int arr[])
+{
+    int duplicateCount = 0;
+    for (int index = 0; index < size; index++)
+    {
+        if (index < size - 1)
+        {
+            for (int jIndex = index + 1; jIndex < size; jIndex++)
+            {
+                if (arr[index] == arr[jIndex])
+                {
+                    duplicateCount++;
+                    break;
+                }
+            }
+        }
+    }
+	return duplicateCount;
 }
 
 
 void Question14()
 {
+    int size = 6;
+    int arr[6] = {1, 2, 1, 2, 34, 1};
 
+    int result = countDuplicates(size, arr);
+
+    cout << "Number of duplicates: " << result << '\n';
     return;
+}
+
+
+void reverse(int size, int arr[])
+{
+    int temporaryNumber;
+    for (int index = 0; index < size / 2; index++)
+    {
+        temporaryNumber = arr[index];
+        arr[index] = arr[size - index - 1];
+        arr[size - index - 1] = temporaryNumber;
+    }
+	return;
 }
 
 
 void Question15()
 {
+    int size = 6;
+    int arr[6] = {1, 2, 11, 4, 0, 0};
+
+    cout << "Array: ";
+    printArray(size, arr);
+
+    cout << "Reversing.\n";
+    reverse(size, arr);
+
+    cout << "Array: ";
+    printArray(size, arr);
+
+    return;
+}
+
+void rotateLeft(int size, int arr[])
+{
+    int firstElement = arr[0];
+    int count = size;
+
+    leftShiftAtIndex(size, count, arr, 0);
+    arr[size - 1] = firstElement;
+
+	return;
+}
+
+void Question16()
+{
+    int size = 6;
+    int arr[6] = {1, 2, 11, 4, 0, 0};
+
+    cout << "Array: ";
+    printArray(size, arr);
+
+    cout << "Rotating.\n";
+    rotateLeft(size, arr);
+
+    cout << "Array: ";
+    printArray(size, arr);
 
     return;
 }
 
 
-void Question16()
+bool twoMovies(int flightLength, int movieLengths[], int size)
 {
-
-    return;
+    for (int index = 0; index < size; index++)
+    {
+        if (index < size - 1)
+        {
+            for (int jIndex = index + 1; jIndex < size; jIndex++)
+            {
+                if (movieLengths[index] + movieLengths[jIndex] == flightLength)
+                {
+                    return true;
+                }
+            }
+        }
+    }
+	return false;
 }
 
 
 void Question17()
 {
+    int size = 6;
+    int movieLengths[6] = {30, 40, 45, 80, 60, 40};
+    int flightLength = 85;
+
+    bool result = twoMovies(flightLength, movieLengths, size);
+
+    if (result == true)
+    {
+        cout << "Movie combination found!\n";
+    }
+    else
+    {
+        cout << "No movie combination found!\n";
+    }
+
+    flightLength = 190;
+    result = twoMovies(flightLength, movieLengths, size);
+
+    if (result == true)
+    {
+        cout << "Movie combination found!\n";
+    }
+    else
+    {
+        cout << "No movie combination found!\n";
+    }
 
     return;
 }
 
 
+int wordCounter(int size, char characters[])
+{
+    int wordCount = 0;
+    int basicLatinCharacterFound = false;
+
+    for (int index = 0; index < size; index++)
+    {
+        if (characters[index] >= 65 && characters[index] <= 90)
+        {
+            basicLatinCharacterFound = true;
+        }
+        else if (characters[index] >= 97 && characters[index] <= 122)
+        {
+            basicLatinCharacterFound = true;
+        }
+        else if (basicLatinCharacterFound && characters[index] == ' ')
+        {
+            wordCount++;
+            basicLatinCharacterFound = false;
+        }
+    }
+    if (basicLatinCharacterFound)
+    {
+        wordCount++;
+    }
+
+	return wordCount;
+}
+
+
 void Question18()
 {
+    int size = 6;
+    char characters[6] = {'A', 'e', ' ', 4, ' ', 'f'};
 
+    int result = wordCounter(size, characters);
+
+    cout << "Words found: " << result << '\n';
     return;
 }
 
 
 void Question19()
 {
-
+    Question7();
     return;
 }
 
@@ -501,7 +749,6 @@ int main()
     {
         cout << "Input question number: ";
         cin >> questionNumber;
-        //questionNumber = 11;
 
         if (questionNumber == 1)
         {
