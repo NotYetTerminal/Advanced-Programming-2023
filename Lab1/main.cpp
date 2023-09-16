@@ -352,7 +352,14 @@ void rightCopyAtIndex(int& count, int arr[], int stoppingIndex)
 {
     for (int index = count; index >= stoppingIndex; index--)
     {
-        arr[index] = arr[index - 1];
+        if (index == 0)
+        {
+            arr[index] = 0;
+        }
+        else
+        {
+            arr[index] = arr[index - 1];
+        }
     }
     count += 1;
     return;
