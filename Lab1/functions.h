@@ -138,6 +138,31 @@ void drawRightAngledTriangle()
 }
 void drawIsocelesTriangle()
 {
+	int numberOfRows = 6;
+
+    char printingCharacter = 'A';
+    int characterPrintAmount;
+
+    for (int row = 0; row <= numberOfRows; row++)
+    {
+        if (row > 3)
+        {
+            characterPrintAmount = 6 - row;
+        }
+        else
+        {
+            characterPrintAmount = row;
+        }
+        for (int columns = 0; columns <= characterPrintAmount; columns++)
+        {
+            cout << printingCharacter;
+        }
+        cout << '\n';
+    }
+    return;
+}
+void drawIsocelesTriangle2()
+{
 	int maxLength = 4;
     maxLength -= 1;
 
@@ -154,10 +179,6 @@ void drawIsocelesTriangle()
         cout << '\n';
     }
     return;
-}
-void drawIsocelesTriangle2()
-{
-	drawIsocelesTriangle();
 }
 
 int find(int size, int arr[], int toFind)
