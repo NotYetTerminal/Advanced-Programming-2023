@@ -12,11 +12,11 @@ CMake Binary=/app/bin/cmake
 CMake Executable=/app/bin/cmake
 Environment Profile=
 Extra Arguments=
-Install Directory=
+Install Directory=/usr/local
 Runtime=Host System
 
 [Launch]
-Launch Configurations=Launch Configuration 0
+Launch Configurations=Launch Configuration 0,Launch Configuration 1
 
 [Launch][Launch Configuration 0]
 Configured Launch Modes=execute
@@ -43,6 +43,18 @@ Remote GDB Shell Script=
 Start With=ApplicationOutput
 Use External Terminal=false
 Working Directory=
+isExecutable=false
+
+[Launch][Launch Configuration 1]
+Configured Launch Modes=execute
+Configured Launchers=nativeAppLauncher
+Name=lab1
+Type=Native Application
+
+[Launch][Launch Configuration 1][Data]
+Configured from ProjectItem=Lab1,lab1
+Project Target=Lab1,lab1
+Working Directory=file:///home/gabor/Documents/GitHub/Advanced-Programming-2023/Lab1/build/
 isExecutable=false
 
 [Project]
