@@ -374,3 +374,35 @@ int wordCounter(int size, char characters[])
     }
 	return wordCount;
 }
+void printArrayElements(int size, int arrayIn[])
+{
+    cout << "{";
+    for (int index = 0; index < size; index++)
+    {
+        if (index == 0)
+        {
+            cout << arrayIn[index];
+        }
+        else
+        {
+            cout << ", " << arrayIn[index];
+        }
+    }
+    cout << "}";
+}
+void printArrayElements(int size, char arrayIn[])
+{
+    cout << "{";
+    for (int index = 0; index < size; index++)
+    {
+        if (index == 0)
+        {
+            cout << arrayIn[index];
+        }
+        else
+        {
+            cout << ", " << arrayIn[index];
+        }
+    }
+    cout << "}";
+}
