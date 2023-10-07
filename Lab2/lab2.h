@@ -138,6 +138,14 @@ void PrintArray(int array[4][6])
 	cout << "}\n";
 	return;
 }
+void clearArray(char array[1000])
+{
+	for (int index = 0; index < 1000; index++)
+	{
+		array[index] = 0;
+	}
+	return;
+}
 void FindAllVariables(char variables[1000], char code[1000])
 {
 	int variablesIndex = 0;
@@ -176,7 +184,9 @@ void FindAllVariables(char variables[1000], char code[1000])
 						variables[variablesIndex] = 0;
 						break;
 					}
-					else if (character == ' ' || character == '=')
+					else if (character == ' ' ||
+							 character == '=' ||
+							 character == ';')
 					{
 						variables[variablesIndex] = ',';
 						variablesIndex++;
@@ -200,5 +210,89 @@ void FindAllVariables(char variables[1000], char code[1000])
 }
 void FindAllVariablesInScope(char variables[1000], char code[1000], int lineNumber)
 {
+	int variablesIndex = 0;
 
+	int scopesIndexes[1000];
+	int scopesIndexesIndex = 0;
+	int currentLineNumber = 0;
+
+	for (int codeIndex = 0; codeIndex < 1000; codeIndex++)
+	{
+		char character = code[codeIndex];
+		if (character == 0)
+		{
+			break;
+		}
+		else
+		{
+			if ((character == 'i' &&
+				 code[codeIndex + 1] == 'n' &&
+				 code[codeIndex + 2] == 't')
+				||
+				(character == 'c' &&
+				 code[codeIndex + 1] == 'h' &&
+				 code[codeIndex + 2] == 'a' &&
+				 code[codeIndex + 3] == 'r'))
+			{
+				codeIndex += 4;
+				character = code[codeIndex];
+				while (character == ' ' && codeIndex < 1000)
+				{
+					codeIndex++;
+					character = code[codeIndex];
+				}
+				int starting_variablesIndex = variablesIndex;
+				while (codeIndex < 1000)
+				{
+					character = code[codeIndex];
+					if (character == '(' || character == '[')
+					{
+						variablesIndex = starting_variablesIndex;
+						variables[variablesIndex] = 0;
+						break;
+					}
+					else if (character == ' ' ||
+							 character == '=' ||
+							 character == ';')
+					{
+						variables[variablesIndex] = ',';
+						variablesIndex++;
+						break;
+					}
+					else
+					{
+						variables[variablesIndex] = character;
+						variablesIndex++;
+					}
+					codeIndex++;
+				}
+			}
+			else if (character == '{')
+			{
+				scopesIndexes[scopesIndexesIndex] = variablesIndex;
+				scopesIndexesIndex++;
+			}
+			else if (character == '}')
+			{
+				scopesIndexesIndex--;
+				variables[scopesIndexes[scopesIndexesIndex]] = 0;
+				variablesIndex = scopesIndexes[scopesIndexesIndex];
+				scopesIndexes[scopesIndexesIndex] = 0;
+			}
+			else if (character == '\n')
+			{
+				currentLineNumber++;
+
+				if (currentLineNumber == lineNumber)
+				{
+					break;
+				}
+			}
+		}
+	}
+	if (variablesIndex != 0 && variables[variablesIndex - 1] == ',')
+	{
+		variables[variablesIndex - 1] = 0;
+	}
+	return;
 }
