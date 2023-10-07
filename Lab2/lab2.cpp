@@ -1,4 +1,8 @@
-#include "lab3.h"
+// Name: Gábor Major
+// Student Number: C00271548
+// Modified: 07/10/2023
+#include "lab2.h"
+using namespace std;
 // add your tests here.
 int main()
 {
