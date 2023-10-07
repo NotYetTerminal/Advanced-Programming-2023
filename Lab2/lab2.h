@@ -4,10 +4,81 @@
 #pragma once
 #include <iostream>
 using namespace std;
+const int rowCount = 4;
+const int columnCount = 6;
 // dont use cout in any of the functions apart from PrintArray();
 int ReplaceWithMinusOne(int array[4][6])
 {
-	return 0;
+	int minNumberCluster = 3;
+	int score = 0;
+	for (int row = 0; row < rowCount; row++)
+	{
+		for (int column = 0; column < columnCount; column++)
+		{
+			int currentValue = array[row][column];
+			if (currentValue > 0)
+			{
+				if (column + minNumberCluster <= columnCount)
+				{
+					int columnIndex = column + 1;
+					int nextValue = array[row][columnIndex];
+					int clusterCount = 1;
+					while (nextValue == currentValue)
+					{
+						clusterCount++;
+
+						columnIndex++;
+						if (columnIndex == columnCount)
+						{
+							break;
+						}
+						else
+						{
+							nextValue = array[row][columnIndex];
+						}
+					}
+					if (clusterCount >= minNumberCluster)
+					{
+						score += currentValue * clusterCount;
+						for (int index = 0; index < clusterCount; index++)
+						{
+							array[row][column + index] = -1;
+						}
+					}
+				}
+				currentValue = array[row][column];
+				if (currentValue > 0 && row + minNumberCluster <= rowCount)
+				{
+					int rowIndex = row + 1;
+					int nextValue = array[rowIndex][column];
+					int clusterCount = 1;
+					while (nextValue == currentValue)
+					{
+						clusterCount++;
+
+						rowIndex++;
+						if (rowIndex == rowCount)
+						{
+							break;
+						}
+						else
+						{
+							nextValue = array[rowIndex][column];
+						}
+					}
+					if (clusterCount >= minNumberCluster)
+					{
+						score += currentValue * clusterCount;
+						for (int index = 0; index < clusterCount; index++)
+						{
+							array[row + index][column] = -1;
+						}
+					}
+				}
+			}
+		}
+	}
+	return score;
 }
 void FallDownAndReplace(int array[4][6])
 {
@@ -15,8 +86,6 @@ void FallDownAndReplace(int array[4][6])
 }
 void PrintArray(int array[4][6])
 {
-	int rowCount = 4;
-	int columnCount = 6;
 	cout << "Array: {";
 	for (int row = 0; row < rowCount; row++)
 	{
