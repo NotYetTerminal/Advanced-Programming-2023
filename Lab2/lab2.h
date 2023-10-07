@@ -140,7 +140,63 @@ void PrintArray(int array[4][6])
 }
 void FindAllVariables(char variables[1000], char code[1000])
 {
-
+	int variablesIndex = 0;
+	for (int codeIndex = 0; codeIndex < 1000; codeIndex++)
+	{
+		char character = code[codeIndex];
+		if (character == 0)
+		{
+			break;
+		}
+		else
+		{
+			if ((character == 'i' &&
+				 code[codeIndex + 1] == 'n' &&
+				 code[codeIndex + 2] == 't')
+				||
+				(character == 'c' &&
+				 code[codeIndex + 1] == 'h' &&
+				 code[codeIndex + 2] == 'a' &&
+				 code[codeIndex + 3] == 'r'))
+			{
+				codeIndex += 4;
+				character = code[codeIndex];
+				while (character == ' ' && codeIndex < 1000)
+				{
+					codeIndex++;
+					character = code[codeIndex];
+				}
+				int starting_variablesIndex = variablesIndex;
+				while (codeIndex < 1000)
+				{
+					character = code[codeIndex];
+					if (character == '(' || character == '[')
+					{
+						variablesIndex = starting_variablesIndex;
+						variables[variablesIndex] = 0;
+						break;
+					}
+					else if (character == ' ' || character == '=')
+					{
+						variables[variablesIndex] = ',';
+						variablesIndex++;
+						break;
+					}
+					else
+					{
+						variables[variablesIndex] = character;
+						variablesIndex++;
+					}
+					codeIndex++;
+				}
+			}
+		}
+	}
+	if (variablesIndex != 0 && variables[variablesIndex - 1] == ',')
+	{
+		variables[variablesIndex - 1] = 0;
+	}
+	return;
 }
 void FindAllVariablesInScope(char variables[1000], char code[1000], int lineNumber)
 {
