@@ -80,9 +80,33 @@ int ReplaceWithMinusOne(int array[4][6])
 	}
 	return score;
 }
+void swapValues(int array[4][6], int row1, int column1, int row2, int column2)
+{
+	int temp = array[row1][column1];
+	array[row1][column1] = array[row2][column2];
+	array[row2][column2] = temp;
+	return;
+}
 void FallDownAndReplace(int array[4][6])
 {
-
+	for (int column = 0; column < columnCount; column++)
+	{
+		int negativeOnesCount = 0;
+		for (int row = rowCount - 1; row >= 0; row--)
+		{
+			int currentValue = array[row][column];
+			if (currentValue == -1)
+			{
+				negativeOnesCount += 1;
+				array[row][column] = -2;
+			}
+			else if (currentValue != 0)
+			{
+				swapValues(array, row, column, row + negativeOnesCount, column);
+			}
+		}
+	}
+	return;
 }
 void PrintArray(int array[4][6])
 {

@@ -15,18 +15,19 @@ int main()
 	PrintArray(array);
 	cout << "\n";
 
-	cout << "Replace with minus one."
+	cout << "Replace with minus one.\n";
 	int score = ReplaceWithMinusOne(array);
 	cout << "Score: " << score << "\n";
 	PrintArray(array);
 	cout << "\n";
 
+	cout << "Fall down and replace.\n";
 	FallDownAndReplace(array);
 	PrintArray(array);
 	cout << "\n";
 
 	char code[1000] = "";
-	char variables[1000]="";
+	char variables[1000] = "";
 	
 	FindAllVariables(variables, code);
 	FindAllVariablesInScope(variables, code, 12);
