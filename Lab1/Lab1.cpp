@@ -220,10 +220,10 @@ int main()
 	std::cout << std::endl;
 
 	int testArray10Size = 6;
-	int testArray10[testArray10Size] = {30, 40, 45,80, 60 ,40};
+	int testArray10[testArray10Size] = {30, 40, 45, 80, 60 ,40};
 	int flightLength = 85;
 	std::cout << "Movie lengths: ";
-	printArrayElements(testArray8Size, testArray8);
+	printArrayElements(testArray10Size, testArray10);
 	std::cout << std::endl;
 	std::cout << "Flight of length " << flightLength << " success: " << twoMovies(flightLength, testArray10, testArray10Size) << std::endl;
 	flightLength = 190;
