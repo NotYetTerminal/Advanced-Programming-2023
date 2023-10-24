@@ -193,11 +193,16 @@ void CaesarCipher()
 			{
 				if (arrayIndex >= 1000)
 				{
+					std::cout << "File longer than 1000 characters!\n";
 					break;
 				}
 				// line.at(i) returns char at position i in string.
 				plainText[arrayIndex] = line.at(i);
 				arrayIndex++;
+			}
+			if (arrayIndex >= 1000)
+			{
+				break;
 			}
 		}
 		myfile.close();
