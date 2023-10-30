@@ -1,6 +1,6 @@
 // Name: Gábor Major
 // Student Number: C00271548
-// Modified: 24/10/2023
+// Modified: 30/10/2023
 
 #include <iostream>
 #include <string>
@@ -56,7 +56,7 @@ void HorizontalChart()
 	}
 	else
 	{
-		std::cout << "Unable to open file";
+		std::cout << "Unable to open file\n";
 	}
 	return;
 }
@@ -102,7 +102,7 @@ void VerticalChart()
 
 		if (!myfile.is_open())
 		{
-			std::cout << "Unable to open file";
+			std::cout << "Unable to open file\n";
 			return;
 		}
 
@@ -172,7 +172,7 @@ void VerticalChart()
 	}
 	else
 	{
-		std::cout << "Unable to open file";
+		std::cout << "Unable to open file\n";
 	}
 	return;
 }
@@ -192,9 +192,12 @@ void CaesarCipher()
 		}
 		myfile.close();
 
+		std::string line;
+		std::ifstream myfile("part3.txt");
+
 		if (!myfile.is_open())
 		{
-			std::cout << "Unable to open file";
+			std::cout << "Unable to open file\n";
 			return;
 		}
 
@@ -232,7 +235,7 @@ void CaesarCipher()
 	}
 	else
 	{
-		std::cout << "Unable to open file";
+		std::cout << "Unable to open file\n";
 	}
 	return;
 }

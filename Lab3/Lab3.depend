@@ -1,0 +1,9 @@
+# depslib dependency file v1.0
+1698659376 source:/home/gabor/Documents/GitHub/Advanced-Programming-2023/Lab3/main.cpp
+	<iostream>
+
+1698659708 source:/home/gabor/Documents/GitHub/Advanced-Programming-2023/Lab3/lab3.cpp
+	<iostream>
+	<string>
+	<fstream>
+
