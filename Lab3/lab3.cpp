@@ -184,25 +184,30 @@ void CaesarCipher()
 
     if (myfile.is_open())
 	{
-		char plainText[1000] = {};
+		int numberOfCharacters = 0;
+
+		while (std::getline(myfile, line))
+		{
+			numberOfCharacters += line.length();
+		}
+		myfile.close();
+
+		if (!myfile.is_open())
+		{
+			std::cout << "Unable to open file";
+			return;
+		}
+
+		char plainText[numberOfCharacters] = {};
 		int arrayIndex = 0;
 
 		while (std::getline(myfile, line))
 		{
 			for (int i = 0; i < line.length(); i++)
 			{
-				if (arrayIndex >= 1000)
-				{
-					std::cout << "File longer than 1000 characters!\n";
-					break;
-				}
 				// line.at(i) returns char at position i in string.
 				plainText[arrayIndex] = line.at(i);
 				arrayIndex++;
-			}
-			if (arrayIndex >= 1000)
-			{
-				break;
 			}
 		}
 		myfile.close();
@@ -240,7 +245,7 @@ int main()
 	std::cout << "Vertical Chart:\n";
     VerticalChart();
 
-	std::cout << "Caesar Cipher up to 1000 characters.\n";
+	std::cout << "Caesar Cipher:\n";
 	CaesarCipher();
 
     return 0;
