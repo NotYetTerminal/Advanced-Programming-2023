@@ -1,6 +1,6 @@
 // Name: Gábor Major
 // Student Number: C00271548
-// Modified: 30/10/2023
+// Modified: 03/11/2023
 
 #include <iostream>
 #include <string>
@@ -13,6 +13,46 @@ void HorizontalChart()
 
     if (myfile.is_open())
 	{
+		int numberOfIntegers = 0;
+
+		while (std::getline(myfile, line))
+		{
+			int currentNumber = 0;
+
+			for (int i = 0; i < line.length(); i++)
+			{
+				// line.at(i) returns char at position i in string.
+				char c = line.at(i);
+
+				if (c == ',')
+				{
+					if (numberOfIntegers == 0)
+					{
+						numberOfIntegers = currentNumber;
+						currentNumber = 0;
+						break;
+					}
+				}
+				else
+				{
+					currentNumber *= 10;
+					currentNumber += c - 48;
+				}
+			}
+		}
+		myfile.close();
+
+		std::string line;
+		std::ifstream myfile("part1.txt");
+
+		if (!myfile.is_open())
+		{
+			std::cout << "Unable to open file\n";
+			return;
+		}
+
+		int numberArray[numberOfIntegers];
+		int arrayIndex = 0;
 		bool firstComma = true;
 
 		while (std::getline(myfile, line))
@@ -32,13 +72,10 @@ void HorizontalChart()
 					}
 					else
 					{
-						for (int index = 0; index < currentNumber; index++)
-						{
-							std::cout << 0;
-						}
-						std::cout << '\n';
-						currentNumber = 0;
+						numberArray[arrayIndex] = currentNumber;
+						arrayIndex++;
 					}
+					currentNumber = 0;
 				}
 				else if (!firstComma)
 				{
@@ -46,13 +83,20 @@ void HorizontalChart()
 					currentNumber += c - 48;
 				}
 			}
-			for (int index = 0; index < currentNumber; index++)
-			{
-				std::cout << 0;
-			}
-			std::cout << '\n';
+			numberArray[arrayIndex] = currentNumber;
+			arrayIndex++;
 		}
 		myfile.close();
+
+        for (int index = 0; index < numberOfIntegers; index++)
+        {
+            for (int jIndex = 0; jIndex < index; jIndex++)
+            {
+                std::cout << 0;
+            }
+            std::cout << '\n';
+        }
+        std::cout << '\n';
 	}
 	else
 	{
@@ -137,7 +181,7 @@ void VerticalChart()
 					}
 					currentNumber = 0;
 				}
-				else  if (!firstComma)
+				else if (!firstComma)
 				{
 					currentNumber *= 10;
 					currentNumber += c - 48;
@@ -179,64 +223,25 @@ void VerticalChart()
 
 void CaesarCipher()
 {
-	std::string line;
-    std::ifstream myfile("part3.txt");
+    char plainText[1000] = "this is a test for your code words are separated by one space and there is no punctuation the letters can be just lower case there are no numbers either just letters a to z";
 
-    if (myfile.is_open())
-	{
-		int numberOfCharacters = 0;
+    int shiftAmount = 0;
+    std::cout << "Input shift amount: ";
+    std::cin >> shiftAmount;
+    std::cout << "Ciphered text: ";
 
-		while (std::getline(myfile, line))
-		{
-			numberOfCharacters += line.length();
-		}
-		myfile.close();
-
-		std::string line;
-		std::ifstream myfile("part3.txt");
-
-		if (!myfile.is_open())
-		{
-			std::cout << "Unable to open file\n";
-			return;
-		}
-
-		char plainText[numberOfCharacters] = {};
-		int arrayIndex = 0;
-
-		while (std::getline(myfile, line))
-		{
-			for (int i = 0; i < line.length(); i++)
-			{
-				// line.at(i) returns char at position i in string.
-				plainText[arrayIndex] = line.at(i);
-				arrayIndex++;
-			}
-		}
-		myfile.close();
-
-		int shiftAmount = 0;
-		std::cout << "Input shift amount: ";
-		std::cin >> shiftAmount;
-		std::cout << "Ciphered text: ";
-
-		for (int index = 0; index < arrayIndex; index++)
-		{
-			char c = plainText[index];
-			if (c != ' ')
-			{
-				c += shiftAmount - 97;
-				c %= 26;
-				c += 97;
-			}
-			std::cout << c;
-		}
-		std::cout << '\n';
-	}
-	else
-	{
-		std::cout << "Unable to open file\n";
-	}
+    for (int index = 0; index < arrayIndex; index++)
+    {
+        char c = plainText[index];
+        if (c != ' ')
+        {
+            c += shiftAmount - 97;
+            c %= 26;
+            c += 97;
+        }
+        std::cout << c;
+    }
+    std::cout << '\n';
 	return;
 }
 
