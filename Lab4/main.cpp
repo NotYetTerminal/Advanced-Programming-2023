@@ -61,21 +61,67 @@ int ReadInQuestions(vector<vector<string>>& questionsVector)
 	}
 }
 
+
+bool ProcessQuestion(vector<string> question)
+{
+    cout << question[0] << "\n";
+    cout << "1. " << question[1] << "\n";
+    cout << "2. " << question[2] << "\n";
+    cout << "3. " << question[3] << "\n";
+    cout << "4. " << question[4] << "\n";
+
+    char input_value;
+    cin >> input_value;
+
+    string dummyString;
+    getline(cin, dummyString);
+
+    return input_value == question[5].at(0);
+}
+
+
 int main()
 {
-	srand(time(0)); // seed the random number generator, otherwise the rand() will return the same sequence of numbers
-	int num = rand() % 10; // returns random int between 0 and 9.
-
-    vector<vector<string>> questionsVector;
-    int result = ReadInQuestions(questionsVector);
-
-    for(int index = 0; index < result; index++)
+    while (true)
     {
-        vector<string> question = questionsVector.at(index);
-        for (int jIndex = 0; jIndex < 6; jIndex++)
+        srand(time(0)); // seed the random number generator, otherwise the rand() will return the same sequence of numbers
+
+        cout << "Trivia Quiz\nAnswer with inputting numbers (1-4)\n";
+
+        vector<vector<string>> questionsVector;
+        int numberOfQuestions = ReadInQuestions(questionsVector);
+        int userScore = 0;
+
+        for (int index = 0; index < numberOfQuestions; index++)
         {
-            cout << question.at(jIndex) << " ";
+            cout << "Question " << index + 1 << ":\n";
+
+            int chosenIndex = rand() % questionsVector.size();
+            vector<string> questionChosen = questionsVector[chosenIndex];
+            questionsVector.erase(questionsVector.begin() + chosenIndex);
+
+            if (ProcessQuestion(questionChosen))
+            {
+                cout << "Correct\n";
+                userScore++;
+            }
+            else
+            {
+                cout << "Wrong\n";
+            }
+            #ifdef _WIN32
+            system("pause");
+            #else
+            system("read");
+            #endif
         }
-        cout << "\n";
+        cout << "You got " << userScore << " out of " << numberOfQuestions << " questions correct.\n";
+        cout << "Type y to restart or n to quit: ";
+        char answer;
+        cin >> answer;
+        if (answer != 'y')
+        {
+            break;
+        }
     }
 }
