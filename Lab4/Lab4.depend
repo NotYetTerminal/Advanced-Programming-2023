@@ -1,0 +1,9 @@
+# depslib dependency file v1.0
+1699363935 source:/home/gabor/Documents/GitHub/Advanced-Programming-2023/Lab4/main.cpp
+	<iostream>
+	<time.h>
+	<stdlib.h>
+	<string>
+	<fstream>
+	<vector>
+
