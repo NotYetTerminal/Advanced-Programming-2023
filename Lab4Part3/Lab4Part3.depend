@@ -1,11 +1,13 @@
 # depslib dependency file v1.0
-1699359774 source:/home/gabor/Documents/GitHub/Advanced-Programming-2023/Lab4Part3/main.cpp
-	"rapidjson/document.h"
-	"rapidjson/prettywriter.h"
-	<cstdio>
+1699442009 source:/home/gabor/Documents/GitHub/Advanced-Programming-2023/Lab4Part3/main.cpp
+	<iostream>
+	<time.h>
+	<stdlib.h>
 	<string>
 	<fstream>
-	<iostream>
+	<vector>
+	"rapidjson/document.h"
+	"rapidjson/prettywriter.h"
 
 1607084234 /home/gabor/Documents/GitHub/Advanced-Programming-2023/Lab4Part3/rapidjson/document.h
 	"reader.h"

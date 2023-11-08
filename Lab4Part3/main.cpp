@@ -100,54 +100,57 @@ int WriteOutHighscore(vector<vector<string>> highscoreVector, Document& document
 	}
 }
 
-int ReadInQuestions(vector<vector<string>>& questionsVector, Document& document)
+int ReadInQuestions(vector<vector<string>>& questionsVector)
 {
-	string line;
-	ifstream myfile("questions.txt");
+    string line;
+    ifstream myfile("questions.json");
 
-	if (myfile.is_open())
-	{
-	    int numberOfQuestions = 0;
-
-		while (getline(myfile, line))
-		{
-		    if (numberOfQuestions == 0)
+    char json[10000] = "";
+    int ji = 0;
+    if (myfile.is_open())
+    {
+        while (std::getline(myfile, line))
+        {
+            for (int i = 0; i < line.length(); i++)
             {
-                for (int i = 0; i < line.length(); i++)
-                {
-                    // line.at(i) returns char at position i in string.
-                    char c = line.at(i);
-                    numberOfQuestions *= 10;
-                    numberOfQuestions += c - 48;
-                }
+                // line.at(i) returns char at position i in string.
+                char c = line.at(i);
+                json[ji++] = c;
             }
-            else
-            {
-                vector<string> currentQuestion;
-                int stringStart = 0;
 
-                for (int i = 0; i < line.length(); i++)
-                {
-                    // line.at(i) returns char at position i in string.
-                    char c = line.at(i);
-                    if (c == ',')
-                    {
-                        currentQuestion.push_back(line.substr(stringStart, i - stringStart));
-                        stringStart = i + 1;
-                    }
-                }
-                currentQuestion.push_back(line.substr(stringStart, line.length() - stringStart));
-                questionsVector.push_back(currentQuestion);
-            }
-		}
-		myfile.close();
+        }
+        myfile.close();
+
+        Document document;
+
+        if (document.Parse(json).HasParseError())
+        {
+            return -1;
+        }
+
+        assert(document.IsObject());
+
+        int numberOfQuestions = document["questionNumber"].GetInt();
+
+        Value& questionsData = document["questionsVector"];
+        assert(questionsData.IsArray());
+
+        for (int index = 0; index < questionsData.Size(); index++)
+        {
+            questionsVector.push_back({questionsData[index]["question"].GetString(),
+                                       questionsData[index]["option1"].GetString(),
+                                       questionsData[index]["option2"].GetString(),
+                                       questionsData[index]["option3"].GetString(),
+                                       questionsData[index]["option4"].GetString(),
+                                       questionsData[index]["answer"].GetString()});
+        }
         return numberOfQuestions;
-	}
-	else
-	{
-		cout << "Unable to open questions file\n";
+    }
+    else
+    {
+        cout << "Unable to open questions file\n";
 		return -1;
-	}
+    }
 }
 
 bool ProcessQuestion(vector<string> question)
@@ -171,9 +174,9 @@ int main()
 {
     vector<vector<string>> highscoreVector;
 
-    Document document;
+    Document highscoreDocument;
 
-    LoadInHighscore(highscoreVector, document);
+    LoadInHighscore(highscoreVector, highscoreDocument);
     string userName;
 
     while (true)
@@ -207,7 +210,7 @@ int main()
         cout << "Trivia Quiz\nAnswer with inputting numbers (1-4)\n";
 
         vector<vector<string>> questionsVector;
-        int numberOfQuestions = ReadInQuestions(questionsVector, document);
+        int numberOfQuestions = ReadInQuestions(questionsVector);
         int userScore = 0;
 
         for (int index = 0; index < numberOfQuestions; index++)
@@ -263,7 +266,7 @@ int main()
             highscoreVector.push_back(userData);
         }
 
-        WriteOutHighscore(highscoreVector, document);
+        WriteOutHighscore(highscoreVector, highscoreDocument);
 
         cout << "Highscore List:\n";
         for (int index = 0; index < highscoreVector.size(); index++)
