@@ -1,0 +1,32 @@
+{
+  "compressionlevel": -1,
+  "height": 50,
+  "infinite": false,
+  "layers": [
+    {
+      "data": [ 1, 2 ],
+      "height": 10,
+      "type": "background"
+    },
+    {
+      "data": [ 2, 3, 24 ],
+      "height": 10,
+      "type": "foreground"
+
+    }
+  ],
+  "orientation": "orthogonal",
+  "renderorder": "right-down",
+  "tiledversion": "1.4.2",
+  "tileheight": 32,
+  "tilesets": [
+    {
+      "firstgid": 1,
+      "source": "Level.tsx"
+    }
+  ],
+  "tilewidth": 32,
+  "type": "map",
+  "version": 1.4,
+  "width": 50
+}

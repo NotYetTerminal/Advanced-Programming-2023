@@ -47,12 +47,12 @@ int main(int, char* []) {
     if (document.Parse(json).HasParseError())
         return 1;
 
-    
+
     printf("\nParsing to document succeeded.\n");
     int  type = document["compressionlevel"].GetInt();
     cout << type;
     ////////////////////////////////////////////////////////////////////////////
-    // 2. Access values in document. 
+    // 2. Access values in document.
 
     printf("\nAccess values in document:\n");
     assert(document.IsObject());    // Document is a JSON value represents the root of DOM. Root can be either an object or array.
@@ -81,14 +81,14 @@ int main(int, char* []) {
         string  type = layers[layersIndex]["type"].GetString();
         std::cout << type;
     }
- 
+
     // adding a 10 to the first data array
     Value& dataArray = document["layers"][0]["data"];
     dataArray.IsArray();
-    
-      
+
+
     dataArray.PushBack(10, document.GetAllocator());
-   
+
     // creating an object
     Value o(kObjectType);
 
@@ -103,14 +103,14 @@ int main(int, char* []) {
     std::ofstream outfilefile("LevelAltered.json");
     StringBuffer sb;
     PrettyWriter<StringBuffer> writer(sb);
-    document.Accept(writer);    
+    document.Accept(writer);
     puts(sb.GetString());
     std::string jsonOut(sb.GetString(), sb.GetSize());
     outfilefile << jsonOut;
 
 
 
-    
+
 
     return 0;
 }

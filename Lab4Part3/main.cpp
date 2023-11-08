@@ -8,41 +8,54 @@
 #include <string>
 #include <fstream>
 #include <vector>
+#include "rapidjson/document.h"
 
 using namespace std;
+using namespace rapidjson;
 
 int LoadInHighscore(vector<vector<string>>& highscoreVector)
 {
     string line;
-	ifstream myfile("highscore.txt");
+    ifstream myfile("highscore.json");
 
-	if (myfile.is_open())
-	{
-	    while (getline(myfile, line))
-		{
-		    vector<string> currentUserData;
-            int stringStart = 0;
-
+    char json[10000] = "";
+    int ji = 0;
+    if (myfile.is_open())
+    {
+        while (std::getline(myfile, line))
+        {
             for (int i = 0; i < line.length(); i++)
             {
                 // line.at(i) returns char at position i in string.
                 char c = line.at(i);
-                if (c == ',')
-                {
-                    currentUserData.push_back(line.substr(stringStart, i - stringStart));
-                    stringStart = i + 1;
-                }
+                json[ji++] = c;
             }
-            currentUserData.push_back(line.substr(stringStart, line.length() - stringStart));
-            highscoreVector.push_back(currentUserData);
-		}
-	    return 0;
-	}
-	else
-	{
-		cout << "Unable to open highscore file\n";
+
+        }
+        myfile.close();
+
+        Document document;
+        if (document.Parse(json).HasParseError())
+        {
+            return -1;
+        }
+
+        assert(document.IsObject());
+
+        const Value& highscoresData = document["highscoreVector"];
+        assert(highscoresData.IsArray());
+
+        for (int index = 0; index < highscoresData.Size(); index++)
+        {
+            highscoreVector.push_back({highscoresData[index]["name"].GetString(), to_string(highscoresData[index]["score"].GetInt())});
+        }
+        return 0;
+    }
+    else
+    {
+        cout << "Unable to open highscore file\n";
 		return -1;
-	}
+    }
 }
 
 int WriteOutHighscore(vector<vector<string>> highscoreVector)

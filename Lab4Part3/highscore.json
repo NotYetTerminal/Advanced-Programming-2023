@@ -1,0 +1,16 @@
+{
+  "highscoreVector": [
+    {
+      "name": "Bob",
+      "score": 2
+    },
+    {
+      "name": "Alice",
+      "score": 1
+    },
+    {
+      "name": "Dave",
+      "score": 1
+    }
+  ]
+}
