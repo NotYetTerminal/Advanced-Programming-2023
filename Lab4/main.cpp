@@ -18,27 +18,48 @@ int LoadInHighscore(vector<vector<string>>& highscoreVector)
 
 	if (myfile.is_open())
 	{
+	    while (getline(myfile, line))
+		{
+		    vector<string> currentUserData;
+            int stringStart = 0;
+
+            for (int i = 0; i < line.length(); i++)
+            {
+                // line.at(i) returns char at position i in string.
+                char c = line.at(i);
+                if (c == ',')
+                {
+                    currentUserData.push_back(line.substr(stringStart, i - stringStart));
+                    stringStart = i + 1;
+                }
+            }
+            currentUserData.push_back(line.substr(stringStart, line.length() - stringStart));
+            highscoreVector.push_back(currentUserData);
+		}
 	    return 0;
 	}
 	else
 	{
-		cout << "Unable to open highscore file";
+		cout << "Unable to open highscore file\n";
 		return -1;
 	}
 }
 
 int WriteOutHighscore(vector<vector<string>> highscoreVector)
 {
-    string line;
-	ifstream myfile("highscore.txt");
+	ofstream myfile("highscore.txt");
 
 	if (myfile.is_open())
 	{
+	    for (int index = 0; index < highscoreVector.size(); index++)
+        {
+            myfile << highscoreVector.at(index)[0] + "," + highscoreVector.at(index)[1] + "\n";
+        }
 	    return 0;
 	}
 	else
 	{
-		cout << "Unable to open highscore file";
+		cout << "Unable to open highscore file\n";
 		return -1;
 	}
 }
@@ -52,7 +73,7 @@ int ReadInQuestions(vector<vector<string>>& questionsVector)
 	{
 	    int numberOfQuestions = 0;
 
-		while (std::getline(myfile, line))
+		while (getline(myfile, line))
 		{
 		    if (numberOfQuestions == 0)
             {
@@ -88,7 +109,7 @@ int ReadInQuestions(vector<vector<string>>& questionsVector)
 	}
 	else
 	{
-		cout << "Unable to open questions file";
+		cout << "Unable to open questions file\n";
 		return -1;
 	}
 }
@@ -115,10 +136,31 @@ int main()
     vector<vector<string>> highscoreVector;
 
     LoadInHighscore(highscoreVector);
-
-    cout << "Input name: ";
     string userName;
-    getline(cin, userName);
+
+    while (true)
+    {
+        cout << "Input name: ";
+        getline(cin, userName);
+
+        if (userName == "")
+        {
+            cout << "Name cannot be nothing!\n";
+        }
+        else
+        {
+            break;
+        }
+    }
+
+    for (int index = 0; index < userName.length(); index++)
+    {
+        if (userName.at(index) == ',')
+        {
+            userName.erase(index, 1);
+            break;
+        }
+    }
 
     while (true)
     {
@@ -155,12 +197,12 @@ int main()
         }
         cout << "You got " << userScore << " out of " << numberOfQuestions << " questions correct.\n";
 
-        vector<string> userData{userName, userScore};
+        vector<string> userData{userName, to_string(userScore)};
         bool added = false;
 
         for (int index = 0; index < highscoreVector.size(); index++)
         {
-            int score = stoi(highscoreVector.at(index)[1])
+            int score = stoi(highscoreVector.at(index)[1]);
             if (userScore > score)
             {
                 highscoreVector.insert(highscoreVector.begin() + index, userData);
@@ -169,7 +211,8 @@ int main()
             }
             else if (userScore == score)
             {
-                if (userName > highscoreVector.at(index)[0])
+                int stringOrder = userName.compare(highscoreVector.at(index)[0]);
+                if (stringOrder == -1)
                 {
                     highscoreVector.insert(highscoreVector.begin() + index, userData);
                     added = true;
@@ -184,10 +227,10 @@ int main()
 
         WriteOutHighscore(highscoreVector);
 
-        cout << "Highscore List:\n"
+        cout << "Highscore List:\n";
         for (int index = 0; index < highscoreVector.size(); index++)
         {
-            cout << index + 1 << ". " << highscoreVector.at(index)[0] << ": " << highscoreVector.at(index)[1];
+            cout << index + 1 << ". " << highscoreVector.at(index)[0] << ": " << highscoreVector.at(index)[1] << "\n";
         }
 
         cout << "Type y to restart or n to quit: ";

@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1699393580 source:/home/gabor/Documents/GitHub/Advanced-Programming-2023/Lab4/main.cpp
+1699437297 source:/home/gabor/Documents/GitHub/Advanced-Programming-2023/Lab4/main.cpp
 	<iostream>
 	<time.h>
 	<stdlib.h>
