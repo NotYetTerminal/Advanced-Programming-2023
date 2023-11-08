@@ -9,11 +9,12 @@
 #include <fstream>
 #include <vector>
 #include "rapidjson/document.h"
+#include "rapidjson/prettywriter.h"
 
 using namespace std;
 using namespace rapidjson;
 
-int LoadInHighscore(vector<vector<string>>& highscoreVector)
+int LoadInHighscore(vector<vector<string>>& highscoreVector, Document& document)
 {
     string line;
     ifstream myfile("highscore.json");
@@ -34,7 +35,6 @@ int LoadInHighscore(vector<vector<string>>& highscoreVector)
         }
         myfile.close();
 
-        Document document;
         if (document.Parse(json).HasParseError())
         {
             return -1;
@@ -42,12 +42,12 @@ int LoadInHighscore(vector<vector<string>>& highscoreVector)
 
         assert(document.IsObject());
 
-        const Value& highscoresData = document["highscoreVector"];
+        Value& highscoresData = document["highscoreVector"];
         assert(highscoresData.IsArray());
 
         for (int index = 0; index < highscoresData.Size(); index++)
         {
-            highscoreVector.push_back({highscoresData[index]["name"].GetString(), to_string(highscoresData[index]["score"].GetInt())});
+            highscoreVector.push_back({highscoresData[index]["name"].GetString(), highscoresData[index]["score"].GetString()});
         }
         return 0;
     }
@@ -58,16 +58,39 @@ int LoadInHighscore(vector<vector<string>>& highscoreVector)
     }
 }
 
-int WriteOutHighscore(vector<vector<string>> highscoreVector)
+int WriteOutHighscore(vector<vector<string>> highscoreVector, Document& document)
 {
-	ofstream myfile("highscore.txt");
+    ofstream myfile("highscore.json");
 
 	if (myfile.is_open())
-	{
-	    for (int index = 0; index < highscoreVector.size(); index++)
+    {
+        Value& highscoresData = document["highscoreVector"];
+        assert(highscoresData.IsArray());
+
+        highscoresData.Clear();
+
+        for (int index = 0; index < highscoreVector.size(); index++)
         {
-            myfile << highscoreVector.at(index)[0] + "," + highscoreVector.at(index)[1] + "\n";
+            Value o(kObjectType);
+
+            string temp = highscoreVector.at(index)[0];
+            o.AddMember("name", "", document.GetAllocator());
+            o["name"].SetString(temp.data(), temp.size(), document.GetAllocator());
+
+            temp = highscoreVector.at(index)[1];
+            o.AddMember("score", "", document.GetAllocator());
+            o["score"].SetString(temp.data(), temp.size(), document.GetAllocator());
+
+            highscoresData.PushBack(o, document.GetAllocator());
         }
+
+	    StringBuffer sb;
+        PrettyWriter<StringBuffer> writer(sb);
+
+        document.Accept(writer);
+
+        string jsonOut(sb.GetString(), sb.GetSize());
+        myfile << jsonOut;
 	    return 0;
 	}
 	else
@@ -77,7 +100,7 @@ int WriteOutHighscore(vector<vector<string>> highscoreVector)
 	}
 }
 
-int ReadInQuestions(vector<vector<string>>& questionsVector)
+int ReadInQuestions(vector<vector<string>>& questionsVector, Document& document)
 {
 	string line;
 	ifstream myfile("questions.txt");
@@ -148,7 +171,9 @@ int main()
 {
     vector<vector<string>> highscoreVector;
 
-    LoadInHighscore(highscoreVector);
+    Document document;
+
+    LoadInHighscore(highscoreVector, document);
     string userName;
 
     while (true)
@@ -182,7 +207,7 @@ int main()
         cout << "Trivia Quiz\nAnswer with inputting numbers (1-4)\n";
 
         vector<vector<string>> questionsVector;
-        int numberOfQuestions = ReadInQuestions(questionsVector);
+        int numberOfQuestions = ReadInQuestions(questionsVector, document);
         int userScore = 0;
 
         for (int index = 0; index < numberOfQuestions; index++)
@@ -238,7 +263,7 @@ int main()
             highscoreVector.push_back(userData);
         }
 
-        WriteOutHighscore(highscoreVector);
+        WriteOutHighscore(highscoreVector, document);
 
         cout << "Highscore List:\n";
         for (int index = 0; index < highscoreVector.size(); index++)
