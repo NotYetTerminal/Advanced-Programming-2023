@@ -11,6 +11,38 @@
 
 using namespace std;
 
+int LoadInHighscore(vector<vector<string>>& highscoreVector)
+{
+    string line;
+	ifstream myfile("highscore.txt");
+
+	if (myfile.is_open())
+	{
+	    return 0;
+	}
+	else
+	{
+		cout << "Unable to open highscore file";
+		return -1;
+	}
+}
+
+int WriteOutHighscore(vector<vector<string>> highscoreVector)
+{
+    string line;
+	ifstream myfile("highscore.txt");
+
+	if (myfile.is_open())
+	{
+	    return 0;
+	}
+	else
+	{
+		cout << "Unable to open highscore file";
+		return -1;
+	}
+}
+
 int ReadInQuestions(vector<vector<string>>& questionsVector)
 {
 	string line;
@@ -56,11 +88,10 @@ int ReadInQuestions(vector<vector<string>>& questionsVector)
 	}
 	else
 	{
-		cout << "Unable to open file";
+		cout << "Unable to open questions file";
 		return -1;
 	}
 }
-
 
 bool ProcessQuestion(vector<string> question)
 {
@@ -79,9 +110,16 @@ bool ProcessQuestion(vector<string> question)
     return input_value == question[5].at(0);
 }
 
-
 int main()
 {
+    vector<vector<string>> highscoreVector;
+
+    LoadInHighscore(highscoreVector);
+
+    cout << "Input name: ";
+    string userName;
+    getline(cin, userName);
+
     while (true)
     {
         srand(time(0)); // seed the random number generator, otherwise the rand() will return the same sequence of numbers
@@ -110,12 +148,48 @@ int main()
                 cout << "Wrong\n";
             }
             #ifdef _WIN32
-            system("pause");
+                system("pause");
             #else
-            system("read");
+                system("read");
             #endif
         }
         cout << "You got " << userScore << " out of " << numberOfQuestions << " questions correct.\n";
+
+        vector<string> userData{userName, userScore};
+        bool added = false;
+
+        for (int index = 0; index < highscoreVector.size(); index++)
+        {
+            int score = stoi(highscoreVector.at(index)[1])
+            if (userScore > score)
+            {
+                highscoreVector.insert(highscoreVector.begin() + index, userData);
+                added = true;
+                break;
+            }
+            else if (userScore == score)
+            {
+                if (userName > highscoreVector.at(index)[0])
+                {
+                    highscoreVector.insert(highscoreVector.begin() + index, userData);
+                    added = true;
+                    break;
+                }
+            }
+        }
+        if (!added)
+        {
+            highscoreVector.push_back(userData);
+        }
+
+        WriteOutHighscore(highscoreVector);
+
+        cout << "Highscore List:\n"
+        for (int index = 0; index < highscoreVector.size(); index++)
+        {
+            cout << index + 1 << ". " << highscoreVector.at(index)[0] << ": " << highscoreVector.at(index)[1];
+        }
+
         cout << "Type y to restart or n to quit: ";
         char answer;
         cin >> answer;
