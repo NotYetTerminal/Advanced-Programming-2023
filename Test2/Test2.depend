@@ -1,0 +1,7 @@
+# depslib dependency file v1.0
+1699616891 source:/home/gabor/Documents/GitHub/Advanced-Programming-2023/Test2/source.cpp
+	<iostream>
+	"functions.h"
+
+1699616955 /home/gabor/Documents/GitHub/Advanced-Programming-2023/Test2/functions.h
+
