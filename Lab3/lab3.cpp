@@ -90,7 +90,7 @@ void HorizontalChart()
 
         for (int index = 0; index < numberOfIntegers; index++)
         {
-            for (int jIndex = 0; jIndex < index; jIndex++)
+            for (int jIndex = 0; jIndex < numberArray[index]; jIndex++)
             {
                 std::cout << 0;
             }
@@ -223,6 +223,7 @@ void VerticalChart()
 
 void CaesarCipher()
 {
+    int arrayIndex = 1000;
     char plainText[1000] = "this is a test for your code words are separated by one space and there is no punctuation the letters can be just lower case there are no numbers either just letters a to z";
 
     int shiftAmount = 0;
@@ -233,6 +234,10 @@ void CaesarCipher()
     for (int index = 0; index < arrayIndex; index++)
     {
         char c = plainText[index];
+        if ((int)c == 0)
+        {
+            break;
+        }
         if (c != ' ')
         {
             c += shiftAmount - 97;
