@@ -1,6 +1,6 @@
 // Name: Gábor Major
 // Student Number: C00271548
-// Modified: 03/11/2023
+// Modified: 14/11/2023
 
 #include <iostream>
 #include <string>
@@ -234,7 +234,7 @@ void CaesarCipher()
     for (int index = 0; index < arrayIndex; index++)
     {
         char c = plainText[index];
-        if ((int)c == 0)
+        if (c == 0)
         {
             break;
         }
