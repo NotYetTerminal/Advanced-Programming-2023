@@ -1,0 +1,7 @@
+# depslib dependency file v1.0
+1700568772 source:/home/gabor/Documents/GitHub/Advanced-Programming-2023/Exam4/main.cpp
+	"functions.h"
+
+1700569198 /home/gabor/Documents/GitHub/Advanced-Programming-2023/Exam4/functions.h
+	<iostream>
+
