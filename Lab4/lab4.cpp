@@ -11,7 +11,37 @@
 
 using namespace std;
 
-int LoadInHighscore(vector<vector<string>>& highscoreVector)
+class Question
+{
+public:
+    string question, answer1, answer2, answer3, answer4;
+    char answerNumber;
+
+    bool ProcessQuestion()
+    {
+        cout << question << "\n";
+        cout << "1. " << answer1 << "\n";
+        cout << "2. " << answer2 << "\n";
+        cout << "3. " << answer3 << "\n";
+        cout << "4. " << answer4 << "\n";
+
+        char input_value;
+        cin >> input_value;
+
+        string dummyString;
+        getline(cin, dummyString);
+
+        return input_value == answerNumber;
+    }
+};
+
+class Player
+{
+public:
+    string name, score;
+};
+
+int LoadInHighscore(vector<Player>& highscoreVector)
 {
     string line;
 	ifstream myfile("highscore.txt");
@@ -20,21 +50,21 @@ int LoadInHighscore(vector<vector<string>>& highscoreVector)
 	{
 	    while (getline(myfile, line))
 		{
-		    vector<string> currentUserData;
+		    Player playerData;
             int stringStart = 0;
 
             for (int i = 0; i < line.length(); i++)
             {
                 // line.at(i) returns char at position i in string.
                 char c = line.at(i);
-                if (c == ',')
+                if (c == ';')
                 {
-                    currentUserData.push_back(line.substr(stringStart, i - stringStart));
+                    playerData.name = line.substr(stringStart, i - stringStart);
                     stringStart = i + 1;
                 }
             }
-            currentUserData.push_back(line.substr(stringStart, line.length() - stringStart));
-            highscoreVector.push_back(currentUserData);
+            playerData.score = line.substr(stringStart, line.length() - stringStart);
+            highscoreVector.push_back(playerData);
 		}
 	    return 0;
 	}
@@ -45,7 +75,7 @@ int LoadInHighscore(vector<vector<string>>& highscoreVector)
 	}
 }
 
-int WriteOutHighscore(vector<vector<string>> highscoreVector)
+int WriteOutHighscore(vector<Player>& highscoreVector)
 {
 	ofstream myfile("highscore.txt");
 
@@ -53,7 +83,7 @@ int WriteOutHighscore(vector<vector<string>> highscoreVector)
 	{
 	    for (int index = 0; index < highscoreVector.size(); index++)
         {
-            myfile << highscoreVector.at(index)[0] + "," + highscoreVector.at(index)[1] + "\n";
+            myfile << highscoreVector.at(index).name + ";" + highscoreVector.at(index).score + "\n";
         }
 	    return 0;
 	}
@@ -64,7 +94,7 @@ int WriteOutHighscore(vector<vector<string>> highscoreVector)
 	}
 }
 
-int ReadInQuestions(vector<vector<string>>& questionsVector)
+int ReadInQuestions(vector<Question>& questionsVector)
 {
 	string line;
 	ifstream myfile("questions.txt");
@@ -87,21 +117,42 @@ int ReadInQuestions(vector<vector<string>>& questionsVector)
             }
             else
             {
-                vector<string> currentQuestion;
+                Question questionData;
                 int stringStart = 0;
+                int stringCounter = 0;
 
                 for (int i = 0; i < line.length(); i++)
                 {
                     // line.at(i) returns char at position i in string.
                     char c = line.at(i);
-                    if (c == ',')
+                    if (c == ';')
                     {
-                        currentQuestion.push_back(line.substr(stringStart, i - stringStart));
+                        if (stringCounter == 0)
+                        {
+                            questionData.question = line.substr(stringStart, i - stringStart);
+                        }
+                        else if (stringCounter == 1)
+                        {
+                            questionData.answer1 = line.substr(stringStart, i - stringStart);
+                        }
+                        else if (stringCounter == 2)
+                        {
+                            questionData.answer2 = line.substr(stringStart, i - stringStart);
+                        }
+                        else if (stringCounter == 3)
+                        {
+                            questionData.answer3 = line.substr(stringStart, i - stringStart);
+                        }
+                        else if (stringCounter == 4)
+                        {
+                            questionData.answer4 = line.substr(stringStart, i - stringStart);
+                        }
                         stringStart = i + 1;
+                        stringCounter++;
                     }
                 }
-                currentQuestion.push_back(line.substr(stringStart, line.length() - stringStart));
-                questionsVector.push_back(currentQuestion);
+                questionData.answerNumber = line.substr(stringStart, line.length() - stringStart)[0];
+                questionsVector.push_back(questionData);
             }
 		}
 		myfile.close();
@@ -114,26 +165,9 @@ int ReadInQuestions(vector<vector<string>>& questionsVector)
 	}
 }
 
-bool ProcessQuestion(vector<string> question)
-{
-    cout << question[0] << "\n";
-    cout << "1. " << question[1] << "\n";
-    cout << "2. " << question[2] << "\n";
-    cout << "3. " << question[3] << "\n";
-    cout << "4. " << question[4] << "\n";
-
-    char input_value;
-    cin >> input_value;
-
-    string dummyString;
-    getline(cin, dummyString);
-
-    return input_value == question[5].at(0);
-}
-
 int main()
 {
-    vector<vector<string>> highscoreVector;
+    vector<Player> highscoreVector;
 
     LoadInHighscore(highscoreVector);
     string userName;
@@ -155,7 +189,7 @@ int main()
 
     for (int index = 0; index < userName.length(); index++)
     {
-        if (userName.at(index) == ',')
+        if (userName.at(index) == ';')
         {
             userName.erase(index, 1);
             break;
@@ -168,7 +202,7 @@ int main()
 
         cout << "Trivia Quiz\nAnswer with inputting numbers (1-4)\n";
 
-        vector<vector<string>> questionsVector;
+        vector<Question> questionsVector;
         int numberOfQuestions = ReadInQuestions(questionsVector);
         int userScore = 0;
 
@@ -177,10 +211,10 @@ int main()
             cout << "Question " << index + 1 << ":\n";
 
             int chosenIndex = rand() % questionsVector.size();
-            vector<string> questionChosen = questionsVector[chosenIndex];
+            Question questionChosen = questionsVector[chosenIndex];
             questionsVector.erase(questionsVector.begin() + chosenIndex);
 
-            if (ProcessQuestion(questionChosen))
+            if (questionChosen.ProcessQuestion())
             {
                 cout << "Correct\n";
                 userScore++;
@@ -197,12 +231,14 @@ int main()
         }
         cout << "You got " << userScore << " out of " << numberOfQuestions << " questions correct.\n";
 
-        vector<string> userData{userName, to_string(userScore)};
+        Player userData;
+        userData.name = userName;
+        userData.score = to_string(userScore);
         bool added = false;
 
         for (int index = 0; index < highscoreVector.size(); index++)
         {
-            int score = stoi(highscoreVector.at(index)[1]);
+            int score = stoi(highscoreVector.at(index).score);
             if (userScore > score)
             {
                 highscoreVector.insert(highscoreVector.begin() + index, userData);
@@ -211,7 +247,7 @@ int main()
             }
             else if (userScore == score)
             {
-                int stringOrder = userName.compare(highscoreVector.at(index)[0]);
+                int stringOrder = userName.compare(highscoreVector.at(index).name);
                 if (stringOrder == -1)
                 {
                     highscoreVector.insert(highscoreVector.begin() + index, userData);
@@ -230,7 +266,7 @@ int main()
         cout << "Highscore List:\n";
         for (int index = 0; index < highscoreVector.size(); index++)
         {
-            cout << index + 1 << ". " << highscoreVector.at(index)[0] << ": " << highscoreVector.at(index)[1] << "\n";
+            cout << index + 1 << ". " << highscoreVector.at(index).name << ": " << highscoreVector.at(index).score << "\n";
         }
 
         cout << "Type y to restart or n to quit: ";
@@ -240,5 +276,6 @@ int main()
         {
             break;
         }
+        cout << "\n";
     }
 }

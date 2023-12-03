@@ -1,5 +1,5 @@
 4
-In what country did the first Starbucks open outside of North America?,Japan,Russia,United Kingdom,Australia,1
-Which kind of bulbs were once exchanged as a form of currency?,Light,Rose,Narcissus,Tulip,4
-What is the 2 times 4?,3,8,9,12,2
-Where is Dublin?,Spain,Greece,Ireland,Turkey,3
+In what country did the first Starbucks open outside of North America?;Japan;Russia;United Kingdom;Australia;1
+Which kind of bulbs were once exchanged as a form of currency?;Light;Rose;Narcissus;Tulip;4
+What is the 2 times 4?;3;8;9;12;2
+Where is Dublin?;Spain;Greece;Ireland;Turkey;3
