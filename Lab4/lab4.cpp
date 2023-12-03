@@ -14,16 +14,16 @@ using namespace std;
 class Question
 {
 public:
-    string question, answer1, answer2, answer3, answer4;
-    char answerNumber;
+    string question, option1, option2, option3, option4;
+    char answer;
 
     bool ProcessQuestion()
     {
         cout << question << "\n";
-        cout << "1. " << answer1 << "\n";
-        cout << "2. " << answer2 << "\n";
-        cout << "3. " << answer3 << "\n";
-        cout << "4. " << answer4 << "\n";
+        cout << "1. " << option1 << "\n";
+        cout << "2. " << option2 << "\n";
+        cout << "3. " << option3 << "\n";
+        cout << "4. " << option4 << "\n";
 
         char input_value;
         cin >> input_value;
@@ -31,7 +31,7 @@ public:
         string dummyString;
         getline(cin, dummyString);
 
-        return input_value == answerNumber;
+        return input_value == answer;
     }
 };
 
@@ -133,25 +133,25 @@ int ReadInQuestions(vector<Question>& questionsVector)
                         }
                         else if (stringCounter == 1)
                         {
-                            questionData.answer1 = line.substr(stringStart, i - stringStart);
+                            questionData.option1 = line.substr(stringStart, i - stringStart);
                         }
                         else if (stringCounter == 2)
                         {
-                            questionData.answer2 = line.substr(stringStart, i - stringStart);
+                            questionData.option2 = line.substr(stringStart, i - stringStart);
                         }
                         else if (stringCounter == 3)
                         {
-                            questionData.answer3 = line.substr(stringStart, i - stringStart);
+                            questionData.option3 = line.substr(stringStart, i - stringStart);
                         }
                         else if (stringCounter == 4)
                         {
-                            questionData.answer4 = line.substr(stringStart, i - stringStart);
+                            questionData.option4 = line.substr(stringStart, i - stringStart);
                         }
                         stringStart = i + 1;
                         stringCounter++;
                     }
                 }
-                questionData.answerNumber = line.substr(stringStart, line.length() - stringStart)[0];
+                questionData.answer = line.substr(stringStart, line.length() - stringStart)[0];
                 questionsVector.push_back(questionData);
             }
 		}

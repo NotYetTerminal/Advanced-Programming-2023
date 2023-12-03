@@ -14,7 +14,32 @@
 using namespace std;
 using namespace rapidjson;
 
-int LoadInHighscore(vector<vector<string>>& highscoreVector, Document& document)
+class Question
+{
+public:
+    string question, option1, option2, option3, option4;
+    char answer;
+    bool ProcessQuestion()
+    {
+        cout << question << "\n";
+        cout << "1. " << option1 << "\n";
+        cout << "2. " << option2 << "\n";
+        cout << "3. " << option3 << "\n";
+        cout << "4. " << option4 << "\n";
+        char input_value;
+        cin >> input_value;
+        string dummyString;
+        getline(cin, dummyString);
+        return input_value == answer;
+    }
+};
+class Player
+{
+public:
+    string name, score;
+};
+
+int LoadInHighscore(vector<Player>& highscoreVector, Document& document)
 {
     string line;
     ifstream myfile("highscore.json");
@@ -47,7 +72,10 @@ int LoadInHighscore(vector<vector<string>>& highscoreVector, Document& document)
 
         for (int index = 0; index < highscoresData.Size(); index++)
         {
-            highscoreVector.push_back({highscoresData[index]["name"].GetString(), highscoresData[index]["score"].GetString()});
+            Player playerData;
+            playerData.name = highscoresData[index]["name"].GetString();
+            playerData.score = highscoresData[index]["score"].GetString();
+            highscoreVector.push_back(playerData);
         }
         return 0;
     }
@@ -58,7 +86,7 @@ int LoadInHighscore(vector<vector<string>>& highscoreVector, Document& document)
     }
 }
 
-int WriteOutHighscore(vector<vector<string>> highscoreVector, Document& document)
+int WriteOutHighscore(vector<Player>& highscoreVector, Document& document)
 {
     ofstream myfile("highscore.json");
 
@@ -73,11 +101,11 @@ int WriteOutHighscore(vector<vector<string>> highscoreVector, Document& document
         {
             Value o(kObjectType);
 
-            string temp = highscoreVector.at(index)[0];
+            string temp = highscoreVector.at(index).name;
             o.AddMember("name", "", document.GetAllocator());
             o["name"].SetString(temp.data(), temp.size(), document.GetAllocator());
 
-            temp = highscoreVector.at(index)[1];
+            temp = highscoreVector.at(index).score;
             o.AddMember("score", "", document.GetAllocator());
             o["score"].SetString(temp.data(), temp.size(), document.GetAllocator());
 
@@ -100,7 +128,7 @@ int WriteOutHighscore(vector<vector<string>> highscoreVector, Document& document
 	}
 }
 
-int ReadInQuestions(vector<vector<string>>& questionsVector)
+int ReadInQuestions(vector<Question>& questionsVector)
 {
     string line;
     ifstream myfile("questions.json");
@@ -137,12 +165,14 @@ int ReadInQuestions(vector<vector<string>>& questionsVector)
 
         for (int index = 0; index < questionsData.Size(); index++)
         {
-            questionsVector.push_back({questionsData[index]["question"].GetString(),
-                                       questionsData[index]["option1"].GetString(),
-                                       questionsData[index]["option2"].GetString(),
-                                       questionsData[index]["option3"].GetString(),
-                                       questionsData[index]["option4"].GetString(),
-                                       questionsData[index]["answer"].GetString()});
+            Question questionData;
+            questionData.question = questionsData[index]["question"].GetString();
+            questionData.option1 = questionsData[index]["option1"].GetString();
+            questionData.option2 = questionsData[index]["option2"].GetString();
+            questionData.option3 = questionsData[index]["option3"].GetString();
+            questionData.option4 = questionsData[index]["option4"].GetString();
+            questionData.answer = questionsData[index]["answer"].GetString()[0];
+            questionsVector.push_back(questionData);
         }
         return numberOfQuestions;
     }
@@ -153,26 +183,9 @@ int ReadInQuestions(vector<vector<string>>& questionsVector)
     }
 }
 
-bool ProcessQuestion(vector<string> question)
-{
-    cout << question[0] << "\n";
-    cout << "1. " << question[1] << "\n";
-    cout << "2. " << question[2] << "\n";
-    cout << "3. " << question[3] << "\n";
-    cout << "4. " << question[4] << "\n";
-
-    char input_value;
-    cin >> input_value;
-
-    string dummyString;
-    getline(cin, dummyString);
-
-    return input_value == question[5].at(0);
-}
-
 int main()
 {
-    vector<vector<string>> highscoreVector;
+    vector<Player> highscoreVector;
 
     Document highscoreDocument;
 
@@ -196,7 +209,7 @@ int main()
 
     for (int index = 0; index < userName.length(); index++)
     {
-        if (userName.at(index) == ',')
+        if (userName.at(index) == ';')
         {
             userName.erase(index, 1);
             break;
@@ -209,7 +222,7 @@ int main()
 
         cout << "Trivia Quiz\nAnswer with inputting numbers (1-4)\n";
 
-        vector<vector<string>> questionsVector;
+        vector<Question> questionsVector;
         int numberOfQuestions = ReadInQuestions(questionsVector);
         int userScore = 0;
 
@@ -218,10 +231,10 @@ int main()
             cout << "Question " << index + 1 << ":\n";
 
             int chosenIndex = rand() % questionsVector.size();
-            vector<string> questionChosen = questionsVector[chosenIndex];
+            Question questionChosen = questionsVector[chosenIndex];
             questionsVector.erase(questionsVector.begin() + chosenIndex);
 
-            if (ProcessQuestion(questionChosen))
+            if (questionChosen.ProcessQuestion())
             {
                 cout << "Correct\n";
                 userScore++;
@@ -238,12 +251,14 @@ int main()
         }
         cout << "You got " << userScore << " out of " << numberOfQuestions << " questions correct.\n";
 
-        vector<string> userData{userName, to_string(userScore)};
+        Player userData;
+        userData.name = userName;
+        userData.score = to_string(userScore);
         bool added = false;
 
         for (int index = 0; index < highscoreVector.size(); index++)
         {
-            int score = stoi(highscoreVector.at(index)[1]);
+            int score = stoi(highscoreVector.at(index).score);
             if (userScore > score)
             {
                 highscoreVector.insert(highscoreVector.begin() + index, userData);
@@ -252,7 +267,7 @@ int main()
             }
             else if (userScore == score)
             {
-                int stringOrder = userName.compare(highscoreVector.at(index)[0]);
+                int stringOrder = userName.compare(highscoreVector.at(index).name);
                 if (stringOrder == -1)
                 {
                     highscoreVector.insert(highscoreVector.begin() + index, userData);
@@ -271,7 +286,7 @@ int main()
         cout << "Highscore List:\n";
         for (int index = 0; index < highscoreVector.size(); index++)
         {
-            cout << index + 1 << ". " << highscoreVector.at(index)[0] << ": " << highscoreVector.at(index)[1] << "\n";
+            cout << index + 1 << ". " << highscoreVector.at(index).name << ": " << highscoreVector.at(index).score << "\n";
         }
 
         cout << "Type y to restart or n to quit: ";
@@ -281,5 +296,6 @@ int main()
         {
             break;
         }
+        cout << "\n";
     }
 }
