@@ -1,8 +1,0 @@
-[
-{
-  "directory": "/home/gabor/Documents/GitHub/Advanced-Programming-2023/Lecture1/build",
-  "command": "/usr/bin/c++ -g -o CMakeFiles/lecture1.dir/main.cpp.o -c /home/gabor/Documents/GitHub/Advanced-Programming-2023/Lecture1/main.cpp",
-  "file": "/home/gabor/Documents/GitHub/Advanced-Programming-2023/Lecture1/main.cpp",
-  "output": "CMakeFiles/lecture1.dir/main.cpp.o"
-}
-]

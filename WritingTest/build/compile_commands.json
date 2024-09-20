@@ -1,8 +1,0 @@
-[
-{
-  "directory": "/home/gabor/Documents/GitHub/Advanced-Programming-2023/WritingTest/build",
-  "command": "/usr/bin/c++ -g -o CMakeFiles/writingtest.dir/source.cpp.o -c /home/gabor/Documents/GitHub/Advanced-Programming-2023/WritingTest/source.cpp",
-  "file": "/home/gabor/Documents/GitHub/Advanced-Programming-2023/WritingTest/source.cpp",
-  "output": "CMakeFiles/writingtest.dir/source.cpp.o"
-}
-]
